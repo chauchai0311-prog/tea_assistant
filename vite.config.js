@@ -1,9 +1,9 @@
 import react from '@vitejs/plugin-react'
 import { defineConfig } from 'vite'
 
-// Vercel / Netlify: base = '/'.
-// Для GitHub Pages project-site замените на '/<repo-name>/'.
+// GitHub Pages project site: https://<user>.github.io/tea_assistant/
+// Для Vercel / Netlify с корнем домена верните base: '/'
 export default defineConfig({
-  base: '/',
+  base: '/tea_assistant/',
   plugins: [react()],
 })
