@@ -1,0 +1,56 @@
+# Dependencies & build
+node_modules/
+dist/
+dist-ssr/
+*.local
+
+# Env secrets (keep .env.example)
+.env
+.env.*
+!.env.example
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# Vercel / Netlify local
+.vercel/
+.netlify/
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+.Python
+
+# Generated PDF catalog & local previews
+tea_catalog_a5.pdf
+tea_catalog_a5_sample*.pdf
+tea_catalog_a5_sample*.png
+_rot_preview/
+_rot_test*.pdf
+
+# Editor / OS
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+*.tmp
+*.bak
+
+# Excel / Office lock & temp files
+~$*
+*.~lock.*
