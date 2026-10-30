@@ -1,8 +1,10 @@
+import { publicUrl } from '../utils/publicUrl'
+
 /**
  * Загрузка каталога чаёв из public/teas.json
  */
 export async function fetchTeas() {
-  const response = await fetch('/teas.json')
+  const response = await fetch(publicUrl('teas.json'))
 
   if (!response.ok) {
     throw new Error(`Не удалось загрузить данные чаёв (${response.status})`)
@@ -14,5 +16,9 @@ export async function fetchTeas() {
     throw new Error('Некорректный формат teas.json: ожидался массив')
   }
 
-  return data
+  // Картинки в JSON вида /images/tea/... — на GitHub Pages нужен base-префикс
+  return data.map((tea) => ({
+    ...tea,
+    image: tea.image ? publicUrl(tea.image) : tea.image,
+  }))
 }
