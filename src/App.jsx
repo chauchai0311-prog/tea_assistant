@@ -24,6 +24,7 @@ function App() {
     tasteCharacter: [],
   }))
   const detailsRef = useRef(null)
+  const resultsRef = useRef(null)
 
   useEffect(() => {
     let cancelled = false
@@ -73,6 +74,15 @@ function App() {
     [filteredTeas, searchQuery, filters],
   )
 
+  const scrollToResults = () => {
+    requestAnimationFrame(() => {
+      resultsRef.current?.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      })
+    })
+  }
+
   const handleSelectTea = (tea) => {
     setSelectedTea(tea)
     requestAnimationFrame(() => {
@@ -82,6 +92,17 @@ function App() {
       })
     })
   }
+
+  const searchBar = (
+    <SearchBar
+      value={searchQuery}
+      onChange={setSearchQuery}
+      onSubmit={scrollToResults}
+      resultCount={loading || error ? null : filteredTeas.length}
+      onJumpToResults={scrollToResults}
+      variant={ENABLE_SELECTION_MATRIX ? 'embedded' : 'panel'}
+    />
+  )
 
   return (
     <div className="app">
@@ -96,9 +117,11 @@ function App() {
                 options={filterOptions}
                 matchCount={filteredTeas.length}
                 onChange={setFilters}
+                searchSlot={searchBar}
               />
-            ) : null}
-            <SearchBar value={searchQuery} onChange={setSearchQuery} />
+            ) : (
+              searchBar
+            )}
             <FilterPanel
               filters={filters}
               options={filterOptions}
@@ -108,7 +131,7 @@ function App() {
           {ENABLE_AI_ASSISTANT ? <AiPromptBox /> : null}
         </aside>
 
-        <section className="app__content">
+        <section className="app__content" ref={resultsRef}>
           {loading && (
             <div className="status-message" role="status">
               <span className="status-message__spinner" aria-hidden="true" />
