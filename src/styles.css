@@ -121,11 +121,18 @@ img {
 }
 
 @media (min-width: 768px) {
+  html,
+  body,
+  #root {
+    height: 100%;
+    overflow: hidden;
+  }
+
   .tea-details--active {
     position: sticky;
     top: var(--space-md);
     z-index: 5;
-    max-height: calc(100vh - 2rem);
+    max-height: calc(100% - 1rem);
     overflow: auto;
   }
 }
@@ -323,6 +330,16 @@ img {
 
 /* Search */
 
+.selection-matrix__search {
+  margin-bottom: var(--space-md);
+}
+
+.search-bar--embedded {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+}
+
 .search-bar__label {
   display: block;
 }
@@ -347,6 +364,41 @@ img {
 .search-bar__input:focus {
   border-color: var(--color-accent);
   box-shadow: 0 0 0 3px rgba(61, 92, 58, 0.14);
+}
+
+/* Кнопка «Найдено →» — в основном для телефона */
+.search-bar__jump {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  width: 100%;
+  min-height: var(--touch);
+  padding: 0.55rem 0.85rem;
+  border: 1px solid #c5d2c1;
+  border-radius: var(--radius-sm);
+  background: var(--color-accent-soft);
+  color: var(--color-accent);
+  font-size: 0.92rem;
+  font-weight: 650;
+  cursor: pointer;
+  text-align: left;
+}
+
+.search-bar__jump:hover {
+  border-color: var(--color-accent);
+  background: #dce8d8;
+}
+
+.search-bar__jump-action {
+  flex-shrink: 0;
+  font-weight: 700;
+}
+
+@media (min-width: 768px) {
+  .search-bar__jump {
+    display: none;
+  }
 }
 
 /* Filters */
@@ -422,13 +474,13 @@ img {
 .chip-toggle {
   display: inline-flex;
   align-items: center;
-  gap: 0.4rem;
-  min-height: 36px;
-  padding: 0.35rem 0.7rem;
+  gap: 0.35rem;
+  min-height: 34px;
+  padding: 0.28rem 0.65rem;
   border: 1px solid var(--color-border);
   border-radius: 999px;
   background: var(--color-surface-2);
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   cursor: pointer;
   user-select: none;
   transition: border-color 0.15s ease, background-color 0.15s ease, color 0.15s ease;
@@ -470,7 +522,7 @@ img {
   align-items: flex-start;
   justify-content: space-between;
   gap: var(--space-sm);
-  margin-bottom: var(--space-md);
+  margin-bottom: var(--space-sm);
 }
 
 .selection-matrix__header .panel__heading {
@@ -487,31 +539,30 @@ img {
 .selection-matrix__body {
   display: flex;
   flex-direction: column;
-  gap: var(--space-md);
+  gap: var(--space-sm);
 }
 
 .selection-matrix__row-title {
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
   color: var(--color-muted);
-  margin-bottom: 0.45rem;
+  margin-bottom: 0.35rem;
 }
 
 .selection-matrix__chips {
   display: flex;
   flex-wrap: wrap;
-  gap: 0.45rem;
+  gap: 0.35rem;
 }
 
 .matrix-chip {
   display: inline-flex;
-  flex-direction: column;
-  align-items: flex-start;
+  align-items: center;
   justify-content: center;
-  gap: 0.1rem;
-  min-height: var(--touch);
-  padding: 0.45rem 0.85rem;
+  gap: 0.25rem;
+  min-height: 34px;
+  padding: 0.3rem 0.65rem;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-sm);
   background: var(--color-surface-2);
@@ -535,23 +586,13 @@ img {
 }
 
 .matrix-chip__label {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   font-weight: 600;
   line-height: 1.2;
 }
 
 .matrix-chip.is-active .matrix-chip__label {
   font-weight: 700;
-}
-
-.matrix-chip__hint {
-  font-size: 0.72rem;
-  color: var(--color-muted);
-  font-weight: 400;
-}
-
-.matrix-chip.is-active .matrix-chip__hint {
-  color: #5a7a56;
 }
 
 .matrix-chip__count {
@@ -1065,9 +1106,18 @@ img {
 }
 
 @media (min-width: 768px) {
+  /* Две независимые колонки по высоте окна — без «чужого» скролла страницы */
   .app {
-    padding: var(--space-xl) var(--space-lg);
-    gap: var(--space-lg);
+    height: 100dvh;
+    max-height: 100dvh;
+    overflow: hidden;
+    padding: var(--space-lg);
+    gap: var(--space-md);
+    box-sizing: border-box;
+  }
+
+  .header {
+    flex-shrink: 0;
   }
 
   .header__inner {
@@ -1091,15 +1141,59 @@ img {
   }
 
   .app__main {
+    flex: 1 1 auto;
+    min-height: 0;
     display: grid;
     grid-template-columns: minmax(260px, 340px) minmax(0, 1fr);
     gap: var(--space-lg);
-    align-items: start;
+    align-items: stretch;
+    overflow: hidden;
+  }
+
+  .app__controls,
+  .app__content {
+    min-height: 0;
+    height: 100%;
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
   }
 
   .app__controls {
-    position: sticky;
-    top: var(--space-md);
+    position: static;
+    max-height: none;
+    padding-right: 0.2rem;
+  }
+
+  .app__controls::-webkit-scrollbar,
+  .app__content::-webkit-scrollbar {
+    width: 8px;
+  }
+
+  .app__controls::-webkit-scrollbar-thumb,
+  .app__content::-webkit-scrollbar-thumb {
+    background: #cfc6b6;
+    border-radius: 999px;
+  }
+
+  .app__controls::-webkit-scrollbar-track,
+  .app__content::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .controls-stack {
+    gap: var(--space-sm);
+  }
+
+  .selection-matrix.panel,
+  .filter-panel.panel,
+  .search-bar.panel {
+    padding: 0.85rem;
+  }
+
+  .app__content {
+    scroll-padding-top: 0.75rem;
   }
 
   .product-card {
