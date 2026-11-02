@@ -27,7 +27,7 @@ function Header() {
 
         <div className="header__text">
           <h1 className="header__title">Помощник по чаю</h1>
-          <p className="header__subtitle">Быстрый подбор чая для витрины</p>
+          <p className="header__subtitle">Быстрый подбор чая около витрины</p>
         </div>
       </div>
     </header>

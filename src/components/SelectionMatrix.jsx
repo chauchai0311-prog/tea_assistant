@@ -7,13 +7,6 @@ const BEST_TIME_LABELS = {
   'Ранний вечер': 'Вечер',
 }
 
-const EFFECT_HINTS = {
-  Взбодриться: 'бодрость',
-  Сфокусироваться: 'ясность',
-  Согреться: 'тепло',
-  Расслабиться: 'спокойствие',
-}
-
 const EFFECT_ORDER = ['Взбодриться', 'Сфокусироваться', 'Согреться', 'Расслабиться']
 
 function orderedValues(values, preferredOrder) {
@@ -25,7 +18,7 @@ function orderedValues(values, preferredOrder) {
   return [...preferred, ...rest]
 }
 
-function MatrixChip({ label, hint, active, onClick, count }) {
+function MatrixChip({ label, active, onClick, count }) {
   return (
     <button
       type="button"
@@ -34,7 +27,6 @@ function MatrixChip({ label, hint, active, onClick, count }) {
       aria-pressed={active}
     >
       <span className="matrix-chip__label">{label}</span>
-      {hint ? <span className="matrix-chip__hint">{hint}</span> : null}
       {typeof count === 'number' ? (
         <span className="matrix-chip__count" aria-hidden="true">
           {count}
@@ -67,6 +59,7 @@ function SelectionMatrix({
   },
   matchCount = 0,
   onChange,
+  searchSlot = null,
 }) {
   const update = (patch) => {
     onChange?.({ ...filters, ...patch })
@@ -106,7 +99,6 @@ function SelectionMatrix({
       <div className="selection-matrix__header">
         <div className="panel__heading">
           <h2 className="panel__title">Матрица выбора</h2>
-          <p className="panel__hint">Нажмите на критерии — каталог сузится сразу</p>
         </div>
         <div className="selection-matrix__meta">
           <span className="panel__count" title="Подходящих чаёв">
@@ -122,6 +114,8 @@ function SelectionMatrix({
           </button>
         </div>
       </div>
+
+      {searchSlot ? <div className="selection-matrix__search">{searchSlot}</div> : null}
 
       <div className="selection-matrix__body">
         <MatrixRow title="Когда пить">
@@ -140,7 +134,6 @@ function SelectionMatrix({
             <MatrixChip
               key={value}
               label={value}
-              hint={EFFECT_HINTS[value]}
               active={filters.effect === value}
               onClick={() => toggleSingle('effect', value)}
             />
